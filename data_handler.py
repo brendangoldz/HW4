@@ -7,20 +7,6 @@ class DataHandler():
     def __init__(self, URL):
         self.URL = abspath(URL)
 
-    def zscore_data(self, X):
-        means = np.zeros((1, X.shape[1]))
-        stds = np.zeros((1, X.shape[1]))
-        for i in range(X.shape[1]):
-            data_ = X[:, i]
-            mean = np.mean(data_)
-            means[:, i] = mean
-            std = np.std(data_, ddof=1)
-            stds[:, i] = std
-        return means, stds
-
-    def apply_zscore(self, means, stds, X):
-        return (X - means)/stds
-    
     def bin_features(self, X):
         XMean = np.mean(X, axis=0)
         for i in range(X.shape[1]):
@@ -71,3 +57,20 @@ class DataHandler():
 
 def get_xy(data, label_index=0):
     return data[:, label_index+1:], data[:, label_index]
+
+def zscore_data(X):
+    means = np.zeros((1, X.shape[1]))
+    stds = np.zeros((1, X.shape[1]))
+    for i in range(X.shape[1]):
+        data_ = X[:, i]
+        mean = np.mean(data_)
+        means[:, i] = mean
+        std = np.std(data_, ddof=1)
+        stds[:, i] = std
+    return means, stds
+
+def apply_zscore(means, stds, X):
+    return (X - means)/stds
+
+def scale(A):
+    return (A-np.min(A))/(np.max(A) - np.min(A))
